@@ -1,0 +1,3 @@
+debian settings per repo from outside of the handler and stored in metadata.json for use by the deb plugin
+unit testing for gems
+file download handling (not certain if it works yet)

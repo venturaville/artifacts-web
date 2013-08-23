@@ -5,10 +5,7 @@ require 'artifacts/log'
 class Artifacts
   class Config
     extend(Mixlib::Config)
-    mongoid '/etc/artifacts/artifacts.yml'
-    environment 'production'
     chef_config '/etc/chef/client.rb'
-    structure '/etc/artifacts/config.json'
   end
   
   class CLI
@@ -20,25 +17,10 @@ class Artifacts
     :default => '/etc/artifacts/artifacts.rb',
     :description => "The configuration file to use"
     
-    option :mongoid,
-    :short => "-m CONFIG",
-    :long  => "--mongoid CONFIG",
-    :description => "The YAML configuration file to use for mongoid"
-
-    option :environment,
-    :short => "-e ENVIRONMENT",
-    :long  => "--environment ENVIRONMENT",
-    :description => "Set RACK_ENV"
-
     option :chef_config,
     :short => "-C CONFIG",
     :long  => "--chef-config CONFIG",
     :description => "config file for chef client"
-
-    option :structure,
-    :short => "-S CONFIG",
-    :long  => "--structure CONFIG",
-    :description => "json structure file for chef loader"
 
     option :log_level,
     :short        => "-l LEVEL",

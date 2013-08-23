@@ -1,25 +1,37 @@
-class ArtifactHandler
-  attr_accessor :type
-  def initialize(type)
-    @type = type
-    if plugin=Module.plugin_type.find{|type, plugin| @type == type}
-      extend plugin.last
-    else
-      extend HandlerPlugin::File
-    end
+require 'fileutils'
+class Artifacts::Handler
+
+  def cd_groupdir(group)
+    groupdir = File.join(@basedir,group)
+    return false unless File.directory? groupdir
+    FileUtils.cd(groupdir)
+    return true
   end
-end
 
-class Module
-  def plugin_type(type=nil)
-    @@plugins ||= {}
-    @@plugins[type] ||= self unless type.nil?
-    return @@plugins
+  def list(type,group)
+    return false unless cd_groupdir(group)
+    return self.send("list_#{type}".to_sym)
   end
+
+  def download(type,group,filename)
+    return false unless cd_groupdir(group)
+    return self.send("download_#{type}".to_sym,filename)
+  end
+
+  def remove(type,group,filename)
+    return false unless cd_groupdir(group)
+    return self.send("cleanup_#{type}".to_sym,filename)
+  end
+
+  def process(type,group,filename)
+    return false unless cd_groupdir(group)
+    return self.send("process_#{type}".to_sym,filename)
+  end
+
+  def initialize(basedir)
+    @basedir = basedir
+  end
+
 end
 
-module HandlerPlugin
-end
-
-Dir[File.join(File.dirname(__FILE__), 'plugins', '*.rb')].each {|file| require file }
-
+Dir[File.dirname(__FILE__) + '/plugins/*.rb'].each {|file| require file }

@@ -1,5 +1,6 @@
 
 require 'rake'
+require 'rake/testtask'
 
 namespace :gem do
   desc "Install the gem locally"
@@ -22,4 +23,12 @@ namespace :git do
     system "git push --tags"
   end
 end
+
+
+Rake::TestTask.new do |t|
+ t.libs << 'test'
+end
+
+desc "Run tests"
+task :default => :test
 
