@@ -1,0 +1,10 @@
+defaults: &defaults
+  host: 
+    - - localhost
+  read_secondary: true
+  max_retries_on_connection_failure: 3
+
+development:
+  <<: *defaults
+  database: artifacts_development
+
